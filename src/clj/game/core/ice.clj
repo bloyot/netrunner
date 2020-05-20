@@ -277,10 +277,11 @@
       (trigger-event state side :ice-strength-changed (get-card state ice) oldstren))))
 
 (defn update-ice-advancement
-  "Updates the given ice's advancement state by triggering an event."
-  [state side ice]
-  (let [ice (get-card state ice)]
-    (trigger-event state side :ice-advancement-changed ice)))
+  "Updates the the advancement state of all ice by triggering an event."
+  [state side]
+  (doseq [server (get-in @state [:corp :servers])
+          ice (:ices (second server))]
+    (trigger-event state side :ice-advancement-changed (get-card state ice))))
 
 (defn update-ice-in-server
   "Updates all ice in the given server's :ices field."
