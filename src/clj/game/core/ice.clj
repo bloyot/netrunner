@@ -276,11 +276,18 @@
       (update! state side (assoc ice :current-strength (ice-strength state side ice)))
       (trigger-event state side :ice-strength-changed (get-card state ice) oldstren))))
 
+(defn update-ice-advancement
+  "Updates the given ice's advancement state by triggering an event."
+  [state side ice]
+  (let [ice (get-card state ice)]
+    (trigger-event state side :ice-advancement-changed ice)))
+
 (defn update-ice-in-server
   "Updates all ice in the given server's :ices field."
   [state side server]
   (doseq [ice (:ices server)]
-    (update-ice-strength state side ice)))
+    (update-ice-strength state side ice)
+    (update-ice-advancement state side ice)))
 
 (defn update-all-ice
   "Updates all installed ice."
